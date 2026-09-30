@@ -133,3 +133,31 @@ section { scroll-margin-top: 4rem; }
 #research .papers li:hover { border-left-color: var(--accent); }
 #research .papers > li > a:first-child, #research .papers strong { font-size: 1.02rem; line-height: 1.45; margin-bottom: 0.2rem; }
 #research .papers .venue { margin-top: 0.1rem; color: var(--text); opacity: 0.75; }
+
+/* Selected work */
+.nav nav { flex-wrap: wrap; row-gap: 0.25rem; }
+.feature { padding: 0.5rem 0 2.5rem; }
+.feature + .feature { border-top: 1px solid var(--border); padding-top: 2.5rem; }
+.feature:last-child { padding-bottom: 0.5rem; }
+h3.feature-title {
+  font-size: 1.2rem; font-weight: 600; letter-spacing: -0.01em; line-height: 1.4;
+  text-transform: none; color: var(--text); margin: 0 0 0.4rem;
+}
+.feature-title a { color: var(--text); }
+.feature-title a:hover { color: var(--accent); text-decoration: none; }
+.feature-meta { color: var(--muted); font-size: 0.93rem; }
+.feature-meta > span:first-child { color: inherit; }
+.feature-meta a.co {
+  color: inherit; text-decoration: underline; text-decoration-color: var(--border); text-underline-offset: 3px;
+}
+.feature-meta a.co:hover { color: var(--accent); text-decoration-color: currentColor; }
+.feature-meta .venue { color: var(--text); opacity: 0.75; }
+.feature figure {
+  margin: 1.5rem 0 1.25rem;
+  background: #fff; border: 1px solid var(--border); border-radius: 8px;
+  padding: 1rem;
+}
+.feature figure img { display: block; width: 100%; height: auto; }
+.feature figure.narrow img { max-width: 420px; margin: 0 auto; }
+.feature figcaption { font-size: 0.85rem; color: #6b7280; margin-top: 0.75rem; text-align: center; }
+.abstract { font-size: 0.95rem; line-height: 1.7; }
