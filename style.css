@@ -107,3 +107,7 @@ section { scroll-margin-top: 4rem; }
   .intro-grid { grid-template-columns: 1fr; }
   .photo { width: 200px; height: 250px; }
 }
+
+/* Vertically centre the photo against the intro text; name needs spacing without the subtitle */
+.intro-grid { align-items: center; }
+.intro h1 { margin-bottom: 1.25rem; }
