@@ -172,3 +172,18 @@ h3.feature-title {
 .ios-ticks { display: flex; justify-content: space-between; padding: 0 8px; }
 .ios-ticks span { width: 1px; height: 8px; background: #a3a3a3; }
 .ios-value { display: block; margin-top: 0.35rem; color: #1f2328; }
+
+/* Collapsible abstracts */
+.papers details { margin-top: 0.35rem; }
+.papers summary {
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  font-size: 0.82rem; font-weight: 500; color: var(--accent);
+  cursor: pointer; list-style: none; user-select: none;
+}
+.papers summary::-webkit-details-marker { display: none; }
+.papers summary::before { content: "▸"; font-size: 0.75rem; transition: transform 0.15s; }
+.papers details[open] summary::before { transform: rotate(90deg); }
+.papers summary:hover { text-decoration: underline; }
+.papers details p {
+  margin-top: 0.5rem; font-size: 0.9rem; line-height: 1.65; color: var(--text); opacity: 0.85;
+}
