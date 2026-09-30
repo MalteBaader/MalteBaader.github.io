@@ -162,3 +162,13 @@ h3.feature-title {
 .feature figcaption { font-size: 0.85rem; color: #6b7280; margin-top: 0.75rem; text-align: center; }
 .abstract { font-size: 0.95rem; line-height: 1.7; }
 .feature figure.medium img { max-width: 620px; margin: 0 auto; }
+
+/* IOS11 interactive demo */
+.ios-tool { max-width: 480px; margin-left: auto !important; margin-right: auto !important; }
+#ios-screen { display: block; width: 100%; height: auto; border: 1px solid #d3d3d3; border-radius: 4px; }
+#ios-screen circle { fill: none; stroke: #1f2328; stroke-width: 1.5; transition: cx 0.15s ease-out; }
+#ios-screen text { font: 22px Inter, Arial, sans-serif; fill: #1f2328; text-anchor: middle; dominant-baseline: middle; transition: x 0.15s ease-out; }
+#ios-slider { width: 100%; margin-top: 1rem; accent-color: #2f5d8a; cursor: pointer; }
+.ios-ticks { display: flex; justify-content: space-between; padding: 0 8px; }
+.ios-ticks span { width: 1px; height: 8px; background: #a3a3a3; }
+.ios-value { display: block; margin-top: 0.35rem; color: #1f2328; }
