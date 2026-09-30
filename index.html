@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Malte Baader</title>
+  <meta name="description" content="Personal website of Malte Baader.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧭</text></svg>">
+</head>
+<body>
+  <canvas id="bg" aria-hidden="true"></canvas>
+
+  <header class="nav">
+    <a href="#top" class="logo">MB<span class="blink">_</span></a>
+    <nav>
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+      <button id="theme" aria-label="Toggle theme">◐</button>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <p class="mono kicker">hello, world — I'm</p>
+      <h1>Malte Baader</h1>
+      <p class="tagline">
+        <span id="typed"></span><span class="cursor">|</span>
+      </p>
+      <div class="cta">
+        <a class="btn primary" href="#projects">See my work</a>
+        <a class="btn" href="https://github.com/MalteBaader" target="_blank" rel="noopener">GitHub ↗</a>
+      </div>
+    </section>
+
+    <section id="about" class="reveal">
+      <h2><span class="mono num">01.</span> About</h2>
+      <div class="card">
+        <p>
+          <!-- TODO: replace with your own bio -->
+          I'm based at NHH Norwegian School of Economics, where I work at the intersection of
+          research, data and software. I like building tools that make empirical work faster,
+          more reproducible and a bit more fun.
+        </p>
+        <ul class="tags">
+          <li>Python</li><li>R</li><li>Survey design</li><li>LLMs</li><li>Data engineering</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="projects" class="reveal">
+      <h2><span class="mono num">02.</span> Projects</h2>
+      <!-- TODO: edit these cards to match your real projects -->
+      <div class="grid">
+        <article class="project">
+          <div class="icon">🎙️</div>
+          <h3>AI Interviewer</h3>
+          <p>Conversational AI that runs structured behavioral interviews at scale.</p>
+          <ul class="tags small"><li>LLMs</li><li>Python</li></ul>
+        </article>
+        <article class="project">
+          <div class="icon">📋</div>
+          <h3>Survey Tooling</h3>
+          <p>Pipelines for building, deploying and cleaning large-scale surveys.</p>
+          <ul class="tags small"><li>XLSForm</li><li>R</li></ul>
+        </article>
+        <article class="project">
+          <div class="icon">🔐</div>
+          <h3>Auth Utilities</h3>
+          <p>Small helpers for JWKS / PEM key handling and API authentication.</p>
+          <ul class="tags small"><li>OAuth</li><li>Crypto</li></ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="contact" class="reveal">
+      <h2><span class="mono num">03.</span> Contact</h2>
+      <div class="card center">
+        <p>Want to collaborate or just say hi? My inbox is open.</p>
+        <a class="btn primary" href="mailto:malte.baader@nhh.no">Say hello ✉</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="mono">
+    Built with ♥ and plain HTML · © <span id="year"></span> Malte Baader
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
