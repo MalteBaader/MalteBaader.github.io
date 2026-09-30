@@ -96,3 +96,14 @@ section { scroll-margin-top: 4rem; }
   text-decoration: underline; text-decoration-color: var(--border); text-underline-offset: 3px;
 }
 .papers a.co:hover { color: var(--accent); text-decoration-color: currentColor; }
+
+/* Larger portrait, rounded rectangle */
+.intro-grid { grid-template-columns: 1fr 240px; }
+.photo {
+  width: 240px; height: 300px; object-position: center 20%;
+  border-radius: 8px;
+}
+@media (max-width: 640px) {
+  .intro-grid { grid-template-columns: 1fr; }
+  .photo { width: 200px; height: 250px; }
+}
