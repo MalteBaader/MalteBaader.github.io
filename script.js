@@ -14,10 +14,21 @@ document.getElementById("year").textContent = new Date().getFullYear();
 
 // Typewriter tagline — edit these phrases!
 const phrases = [
-  "Researcher & developer.",
-  "I build tools for data-driven research.",
-  "Surveys, LLMs and reproducible pipelines.",
+  "Behavioural & experimental economist.",
+  "Research Data Manager at FAIR, NHH.",
+  "Creativity, ethics & cooperation.",
+  "I build tools for experimental research.",
 ];
+
+// Research filters
+document.querySelectorAll(".filter").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".filter").forEach((b) => b.classList.toggle("active", b === btn));
+    const f = btn.dataset.filter;
+    document.querySelectorAll(".paper").forEach((p) =>
+      p.classList.toggle("hidden", f !== "all" && p.dataset.kind !== f));
+  });
+});
 const typed = document.getElementById("typed");
 let p = 0, i = 0, deleting = false;
 (function type() {
