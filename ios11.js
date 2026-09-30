@@ -1,4 +1,4 @@
-// IOS11 demo: same geometry as the published tool (github.com/MalteBaader/IOS)
+// IOS11 demo: same geometry as the published tool (see the IOS project README)
 (function () {
   var slider = document.getElementById("ios-slider");
   if (!slider) return;
