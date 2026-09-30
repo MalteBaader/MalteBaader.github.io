@@ -68,3 +68,24 @@ footer {
   border-top: 1px solid var(--border);
   color: var(--muted); font-size: 0.88rem;
 }
+
+/* Sticky menu that follows you down the page */
+.nav-wrap {
+  position: sticky; top: 0; z-index: 10;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+}
+.nav { padding: 1rem; }
+section { scroll-margin-top: 4rem; }
+
+/* Intro with photo */
+.intro-grid { display: grid; grid-template-columns: 1fr 180px; gap: 2.5rem; align-items: start; }
+.photo {
+  width: 180px; height: 180px; object-fit: cover; object-position: center 25%;
+  border-radius: 50%; border: 1px solid var(--border);
+}
+@media (max-width: 640px) {
+  .intro-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+  .photo { order: -1; width: 140px; height: 140px; }
+}
