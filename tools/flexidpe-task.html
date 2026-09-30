@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<title>Flexi-DPE task</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  div.a, div.b {
+    margin-left: 15%;
+    margin-right: 15%;
+    line-height: 1.2em;
+  }
+
+  div.a { text-align: left; }
+  div.b { text-align: center; }
+
+  .responsive {
+    width: auto;
+    height: auto;
+  }
+
+  canvas {
+    border:1px solid #d3d3d3;
+    background-color: #fcfcfc;
+    background-image: repeating-linear-gradient(
+      0deg, transparent, transparent 29px, #CCC 29px, #CCC 30px
+    ),
+    repeating-linear-gradient(
+      -90deg, transparent, transparent 29px, #CCC 29px, #CCC 30px
+    );
+    background-size: 30px 30px;
+    background-position: right 30px bottom 30px;
+    margin-left: 0%;
+    top: 0%;
+  }
+
+  .buttonSubmit {
+    background-color: #ffffff;
+    color: black;
+    border: 1px solid #a7a7a7;
+    padding: 10px 30px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 20%;
+  }
+
+  .buttonSubmit:hover {
+    background-color: #afafaf;
+    border: 1px solid #a7a7a7;
+  }
+
+  table.frame {
+    width: 100%;
+    border: 0px;
+    text-align: center;
+  }
+
+  #button2, #button3, #button4, #button5 {
+  background-color: #deefff;
+  border: 1px solid black;
+  padding: 10px 20px; /* Adjust as needed for size */
+  font-family: inherit; 
+  font-size: inherit; 
+  border-radius: 10px;
+}
+
+#button2:hover, #button3:hover, #button4:hover, #button5:hover {
+  background-color: #cce0f5; /* a slightly darker blue */
+}
+</style>
+</head>
+<body onload="startGame()">
+
+<div style="text-align: center;">
+  Please select which version of Flexi-DPE you would like to try out:<br>
+  <br>
+  <button id="button2">DPE-20</button>
+  <button id="button3">DPE-10</button>
+  <button id="button4">DPE-5</button>
+  <button id="button5">DPE-3</button>
+</div>
+
+<br>
+
+<div id="instructions">
+  <div style="text-align:center;font-size:25px">Instructions</div><br>
+  <div style="text-align:left;margin-left: 10%;">
+    In this study, you will make <b><span id="decisionsCount">3</span> decisions</b> to allocate Tokens between yourself and another person using a screen shown below.
+    <br><br>
+    Choose allocations by clicking anywhere on the blue line. This places a red square that you can move. Your current allocation is also shown below the figure.<br><br>
+    Confirm with 'Submit'.
+  </div>
+</div>
+
+<br>
+
+<table class="frame" id="table">
+  <td>
+    <ul id="myList">
+      <h3>
+        Please allocate Tokens between <font color="green">You</font> and 
+        <font color="blue">one Other person</font>.
+      </h3>
+    </ul>
+    <h3>
+      You allocate <span id="demo" style="color:green;">&nbsp; &nbsp;</span> Tokens to 
+      <font color="green">You</font>, and 
+      <span id="demo2" style="color:blue;">&nbsp; &nbsp;</span> Tokens to 
+      <font color="blue">one Other person</font>.
+    </h3>
+
+    <div class="button2">
+      <button type="button" class="buttonSubmit" onclick="saveInput1()">Submit</button>
+    </div>
+  </td>
+</table>
+
+<div id="finish" style="text-align:center;display:none;width:100%;">
+  <h3>You have finished the decisions.</h3>
+</div>
+
+<script>
+  // Global variables
+  var rounds = 3; // Default rounds
+  var Period = 1; // Start with period 1
+  var isGamePieceVisible = false;
+  var isMousedown = false;
+
+  var my3, other3;
+  var my_stored = [];
+  var other_stored = [];
+  var qx_stored = [];
+  var qy_stored = [];
+
+  // Data arrays
+  var qy20 = [100,100,100,100,100,100,100,100,100,100,84,58,41,30,22,17,14,12,11,10];
+  var qx20 = [10,11,12,14,17,22,30,41,58,84,100,100,100,100,100,100,100,100,100,100];
+
+  var qy10 = [100,100,100,100,100,70,35,20,13,10];
+  var qx10 = [10,13,20,35,70,100,100,100,100,100];
+
+  var qy5 = [100,100,50,26,12];
+  var qx5 = [12,26,50,100,100];
+
+  var qy3 = [100,50,15];
+  var qx3 = [15,50,100];
+
+  var orderPots = [];
+  var qx, qy, p, modqy, modcons, widthpoint;
+  
+  // Add event listeners to the buttons
+  document.getElementById("button2").addEventListener("click", () => initializeRounds(20));
+  document.getElementById("button3").addEventListener("click", () => initializeRounds(10));
+  document.getElementById("button4").addEventListener("click", () => initializeRounds(5));
+  document.getElementById("button5").addEventListener("click", () => initializeRounds(3));
+
+  // Initialize rounds and set up orderPots
+  function initializeRounds(num) {
+    document.getElementById("instructions").style.display = "block";
+    document.getElementById("table").style.display = "table";
+    document.getElementById("finish").style.display = "none";
+    rounds = num;
+    document.getElementById("decisionsCount").textContent = rounds;
+    Period = 1;
+    orderPots = createOrderPots(rounds);
+    resetGame();
+  }
+
+  // Create a random order array for pots
+  function createOrderPots(num) {
+    var arr = [];
+    while (arr.length < num) {
+      var r = Math.floor(Math.random() * num) + 1;
+      if (arr.indexOf(r) === -1) arr.push(r);
+    }
+    return arr;
+  }
+
+  // Retrieve qx, qy based on current round and period
+  function setQValues() {
+    var currentSet = orderPots[Period - 1] - 1;
+    if (rounds == 20) {
+      qx = qx20[currentSet];
+      qy = qy20[currentSet];
+    } else if (rounds == 10) {
+      qx = qx10[currentSet];
+      qy = qy10[currentSet];
+    } else if (rounds == 5) {
+      qx = qx5[currentSet];
+      qy = qy5[currentSet];
+    } else {
+      qx = qx3[currentSet];
+      qy = qy3[currentSet];
+    }
+
+    p = qy / qx; 
+    modqy = 360 - 3 * qy;
+    modcons = modqy - p * 60;
+    widthpoint = (qx / 10 + 2) * 30;
+  }
+
+  function resetGame() {
+    clearInterval(myGameArea.interval);
+    myGameArea.clear();
+    myGamePiece = null;
+    isGamePieceVisible = false;
+    setQValues();
+    document.getElementById("demo").innerHTML = "&nbsp;&nbsp;";
+    document.getElementById("demo2").innerHTML = "&nbsp;&nbsp;";
+    startGame();
+  }
+
+  // Game area and component definitions
+  var myGamePiece;
+  var myGameArea = {
+    canvas: document.createElement("canvas"),
+    start: function() {
+      this.canvas.width = 420;
+      this.canvas.height = 420;
+      this.canvas.style.cursor = "pointer";
+      this.context = this.canvas.getContext("2d");
+
+      var list = document.getElementById("myList");
+      list.insertBefore(this.canvas, list.childNodes[25]);
+
+      this.interval = setInterval(updateGameArea, 20);
+      var rect = this.canvas.getBoundingClientRect();
+      var l = rect.left;
+      var t = rect.top;
+
+      // Mouse events
+      this.canvas.addEventListener('click', (e) => {
+        isGamePieceVisible = true;
+        myGameArea.x = e.clientX - l;
+        myGameArea.y = e.clientY - t;
+      });
+
+      this.canvas.addEventListener('mousedown', () => {
+        isMousedown = true;
+      });
+
+      this.canvas.addEventListener('mouseup', () => {
+        isMousedown = false;
+      });
+
+      this.canvas.addEventListener("mousemove", (event) => {
+        if (isMousedown) {
+          myGameArea.x = event.clientX - l;
+          myGameArea.y = event.clientY - t;
+        }
+      });
+
+      window.addEventListener('keydown', (e) => {
+        myGameArea.key = e.keyCode;
+      });
+
+      window.addEventListener('keyup', () => {
+        myGameArea.key = false;
+      });
+    },
+    clear: function() {
+      this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+  };
+
+  function component(width, height, color, x, y) {
+    this.width = width;
+    this.height = height;
+    this.x = x;
+    this.y = y;    
+    this.update = function() {
+      var ctx = myGameArea.context;
+      // Draw the red square
+      ctx.fillStyle = color;
+      ctx.fillRect(this.x, this.y, this.width, this.height);
+
+      // Draw the blue line and axes
+      ctx.fillStyle = "#deefff";
+      ctx.fillRect(0, 0, 60, 400);
+      ctx.fillRect(0, 360, 400, 360);
+      ctx.fillRect(0, 0, 400, 30);
+      ctx.fillRect(391, 0, 400, 420);
+
+      ctx.beginPath();
+      ctx.lineWidth = 1;
+      ctx.moveTo(60, 420 - (qy / 10 + 2) * 30);
+      ctx.lineTo(widthpoint, 360); 
+      ctx.strokeStyle = "blue";
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(60, 30);
+      ctx.lineTo(60, 360);
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = "black";
+      ctx.stroke();
+
+      ctx.moveTo(60, 360);
+      ctx.lineTo(390, 360);
+      ctx.stroke();
+
+      // X-axis ticks
+      ctx.font = "12px Arial";
+      ctx.fillStyle = "black";
+      ctx.textAlign = "center";
+      for (var i = 1; i < 11; i++){
+        ctx.fillText(i * 10, (i+2)*30, 375);
+      }
+
+      // Y-axis ticks
+      ctx.textAlign = "right";
+      ctx.fillText(0, 55, 365);
+      for (var j=10; j>0; j--){
+        ctx.fillText(j*10, 55, 425-(j+2)*30);
+      }
+
+      // Y-axis label (Tokens to You)
+      ctx.textAlign = "center";
+      ctx.font = "20px Arial";
+      ctx.fillStyle = "green";
+      var labelYou = "Tokens to You".split("");
+      var yStart = 100;
+      labelYou.forEach(function(char) {
+        ctx.fillText(char, 28, yStart);
+        yStart += 20;
+      });
+
+      // X-axis label (Tokens to Other)
+      ctx.fillStyle = "blue"; 
+      ctx.fillText("Tokens to Other person", 225, 398);
+      ctx.fillStyle = "black";
+    };
+  }
+
+  function startGame() {
+    myGamePiece = new component(10, 10, "red", 10, 10);
+    myGameArea.start();
+  }
+
+  function updateOutputs(my2, other2) {
+    document.getElementById("demo").innerHTML = ((-my2+360)/3).toFixed(1);
+    my3 = ((-my2+360)/3);
+
+    document.getElementById("demo2").innerHTML = ((other2-60)/3).toFixed(1);
+    other3 = ((other2-60)/3);
+  }
+
+  function handleArrows() {
+    if (!myGameArea.key) return;
+    // Left or Up arrow
+    if (myGameArea.key == 37 || myGameArea.key == 38) {
+      myGameArea.x -= 0.05;
+    }
+    // Right or Down arrow
+    if (myGameArea.key == 39 || myGameArea.key == 40) {
+      myGameArea.x += 0.05;
+    }
+  }
+
+  function clampPosition() {
+    // The line extends from x=60 to x=(3*qx+60)
+    var minX = 60;
+    var maxX = 3*qx+60;
+
+    if (myGameArea.x < minX) myGameArea.x = minX;
+    if (myGameArea.x > maxX) myGameArea.x = maxX;
+  }
+
+  function updateGameArea() {
+    myGameArea.clear();
+    if (isGamePieceVisible) {
+      handleArrows();
+      clampPosition();
+
+      var adjustedX = -5 + myGameArea.x;
+      var adjustedY = -5 + p * myGameArea.x + modcons;
+
+      myGamePiece.x = adjustedX;
+      myGamePiece.y = adjustedY;
+
+      var other2 = 5 + myGamePiece.x;
+      var my2 = 5 + myGamePiece.y;
+      updateOutputs(my2, other2);
+    }
+    myGamePiece.update();
+  }
+
+  function saveInput1() {
+    if (!isGamePieceVisible || my3 === undefined) {
+      alert("You have not yet decided!");
+      return;
+    }
+
+    my_stored[Period - 1] = my3;
+    other_stored[Period - 1] = other3;
+    qx_stored[Period - 1] = qx;
+    qy_stored[Period - 1] = qy;
+
+    toggleGamePieceVisibility();
+
+    if (Period < rounds) {
+      Period++;
+      resetGame();
+    } else {
+      document.getElementById("instructions").style.display = "none";
+      document.getElementById("table").style.display = "none";
+      document.getElementById("finish").style.display = "block";
+    }
+  }
+
+  function toggleGamePieceVisibility() {
+    isGamePieceVisible = !isGamePieceVisible;
+  }
+
+  // Initialize the random order for the default number of rounds
+  orderPots = createOrderPots(rounds);
+  setQValues();
+</script>
+</body>
+</html>

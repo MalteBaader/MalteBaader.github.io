@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>IOS11 · Malte Baader</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <div class="nav-wrap">
+    <header class="nav">
+      <a href="../index.html" class="name">Malte Baader</a>
+      <nav><a href="../index.html#tools">← Back to tools</a></nav>
+    </header>
+  </div>
+
+  <main class="tool-page">
+    <section class="intro">
+      <h1>IOS11</h1>
+      <p class="lead">An extended, interactive version of the Inclusion of Other in the Self scale for measuring relationship closeness.</p>
+    </section>
+
+    <section>
+      <h2>Try it</h2>
+      <figure class="ios-tool feature-figure">
+        <svg id="ios-screen" viewBox="0 0 400 180" role="img" aria-label="Two circles labelled You and X; their overlap follows the slider">
+          <circle id="ios-c1" cy="90" r="70"/>
+          <circle id="ios-c2" cy="90" r="70"/>
+          <text id="ios-you" y="90">You</text>
+          <text id="ios-x" y="90">X</text>
+        </svg>
+        <input id="ios-slider" type="range" min="1" max="11" step="1" value="6" aria-label="Relationship closeness, 1 to 11">
+        <div class="ios-ticks" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+        <figcaption>Think of someone you know as X and move the slider until the circles show how close you are. <span class="ios-value">Your answer: <strong id="ios-out">6</strong> / 11</span></figcaption>
+      </figure>
+    </section>
+
+    <section>
+      <h2>Download</h2>
+      <ul class="papers">
+        <li>
+          <a href="https://osf.io/72hkm" target="_blank" rel="noopener">Qualtrics implementation ↗</a>
+          <span>Ready-to-import survey question for Qualtrics (OSF).</span>
+        </li>
+        <li>
+          <a href="https://osf.io/mkx5q" target="_blank" rel="noopener">HTML implementation ↗</a>
+          <span>Plain HTML/JavaScript for integration into platforms such as LIONESS Lab and oTree (OSF).</span>
+        </li>
+      </ul>
+      <p class="tool-note">Need help implementing IOS11? Get in touch at <a href="mailto:malte.baader@nhh.no">malte.baader@nhh.no</a>.</p>
+    </section>
+
+    <section>
+      <h2>Citation</h2>
+      <p>IOS11 is distributed as cite-ware. If you use it, please cite:</p>
+      <blockquote class="citation">
+        Baader, M., Starmer, C., Tufano, F., &amp; Gächter, S. (2024). Introducing IOS11 as an extended interactive version of the 'Inclusion of Other in the Self' scale to estimate relationship closeness. <em>Scientific Reports</em>, 14(1), 8901.
+        <a href="https://doi.org/10.1038/s41598-024-58042-6" target="_blank" rel="noopener">doi.org/10.1038/s41598-024-58042-6</a>
+      </blockquote>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p class="footer-copy">© 2026 Malte Baader · <a href="mailto:malte.baader@nhh.no">malte.baader@nhh.no</a></p>
+  </footer>
+  <script src="../ios11.js"></script>
+</body>
+</html>
