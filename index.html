@@ -7,198 +7,156 @@
   <meta name="description" content="Malte Baader: behavioural and experimental economist, Research Data Manager at FAIR, NHH Norwegian School of Economics.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧪</text></svg>">
 </head>
 <body>
-  <canvas id="bg" aria-hidden="true"></canvas>
-
   <header class="nav">
-    <a href="#top" class="logo">MB<span class="blink">_</span></a>
+    <a href="#top" class="name">Malte Baader</a>
     <nav>
-      <a href="#about">About</a>
       <a href="#research">Research</a>
       <a href="#tools">Tools</a>
       <a href="#teaching">Teaching</a>
-      <a href="#contact">Contact</a>
-      <button id="theme" aria-label="Toggle theme">◐</button>
+      <a href="https://drive.google.com/file/d/1oGpusvWLcrhf6qpyetuS1-TRBeOkXcYq/view?usp=sharing" target="_blank" rel="noopener">CV</a>
     </nav>
   </header>
 
   <main id="top">
-    <section class="hero">
-      <p class="mono kicker">hello, world. I'm</p>
+    <section class="intro">
       <h1>Malte Baader</h1>
-      <p class="tagline">
-        <span id="typed"></span><span class="cursor">|</span>
+      <p class="lead">Behavioural &amp; experimental economist</p>
+      <p>
+        I'm a Research Data Manager at <strong>FAIR</strong> (Centre for Experimental Research on
+        Fairness, Inequality and Rationality) at the Norwegian School of Economics (NHH) in Bergen.
+        My research focuses on creativity, team cohesion and organisational innovation, and I
+        build experimental tools for scientific research.
       </p>
-      <div class="cta">
-        <a class="btn primary" href="#research">See my research</a>
-        <a class="btn" href="https://drive.google.com/file/d/1oGpusvWLcrhf6qpyetuS1-TRBeOkXcYq/view?usp=sharing" target="_blank" rel="noopener">CV ↗</a>
-        <a class="btn" href="https://github.com/MalteBaader" target="_blank" rel="noopener">GitHub ↗</a>
-      </div>
+      <p>
+        Previously, I was a postdoctoral researcher at the University of Zurich. I received my PhD
+        from CeDEx at the University of Nottingham.
+      </p>
+      <p class="links">
+        <a href="mailto:malte.baader@nhh.no">Email</a>
+        <a href="https://drive.google.com/file/d/1oGpusvWLcrhf6qpyetuS1-TRBeOkXcYq/view?usp=sharing" target="_blank" rel="noopener">CV</a>
+        <a href="https://github.com/MalteBaader" target="_blank" rel="noopener">GitHub</a>
+      </p>
     </section>
 
-    <section id="about" class="reveal">
-      <h2><span class="mono num">01.</span> About</h2>
-      <div class="card">
-        <p>
-          I'm a Research Data Manager at <strong>FAIR</strong> (Centre for Experimental Research on
-          Fairness, Inequality and Rationality) at the <strong>Norwegian School of Economics (NHH)</strong>
-          in Bergen, Norway.
-        </p>
-        <p>
-          My research is in behavioural and experimental economics, with a particular focus on
-          creativity, team cohesion and organisational innovation. I also build experimental
-          tools for scientific research.
-        </p>
-        <p>
-          Previously, I was a postdoctoral researcher at the University of Zurich. I received my PhD
-          from CeDEx at the University of Nottingham.
-        </p>
-        <ul class="tags">
-          <li>Experimental economics</li><li>Behavioural economics</li><li>Creativity</li>
-          <li>Organisational ethics</li><li>Social preferences</li><li>AI-assisted interviews</li>
-        </ul>
-      </div>
-    </section>
+    <section id="research">
+      <h2>Research</h2>
 
-    <section id="research" class="reveal">
-      <h2><span class="mono num">02.</span> Research</h2>
-
-      <div class="filters mono" role="tablist">
-        <button class="filter active" data-filter="all">All</button>
-        <button class="filter" data-filter="pub">Published</button>
-        <button class="filter" data-filter="wp">Working papers</button>
-        <button class="filter" data-filter="wip">In progress</button>
-      </div>
-
-      <ol class="papers">
-        <li class="paper" data-kind="pub">
+      <h3>Publications</h3>
+      <ul class="papers">
+        <li>
           <a href="https://link.springer.com/article/10.1007/s00199-024-01617-1" target="_blank" rel="noopener">Social Preferences and the Variability of Conditional Cooperation</a>
-          <span class="authors">with Simon Gächter, Kyeongtae Lee &amp; Martin Sefton</span>
+          <span>with Simon Gächter, Kyeongtae Lee &amp; Martin Sefton</span>
           <span class="venue"><em>Economic Theory</em>, 2026</span>
         </li>
-        <li class="paper" data-kind="pub">
+        <li>
           <a href="https://doi.org/10.1038/s41598-024-58042-6" target="_blank" rel="noopener">Introducing IOS11 as an Extended Interactive Version of the 'Inclusion of Other in the Self' Scale to Estimate Relationship Closeness</a>
-          <span class="authors">with Chris Starmer, Fabio Tufano &amp; Simon Gächter</span>
+          <span>with Chris Starmer, Fabio Tufano &amp; Simon Gächter</span>
           <span class="venue"><em>Scientific Reports</em>, 2024</span>
         </li>
-        <li class="paper" data-kind="pub">
+        <li>
           <a href="https://www.sciencedirect.com/science/article/pii/S0167268117302032" target="_blank" rel="noopener">Interaction of Reasoning Ability and Distributional Preferences in a Social Dilemma</a>
-          <span class="authors">with Alexander Vostroknutov</span>
+          <span>with Alexander Vostroknutov</span>
           <span class="venue"><em>Journal of Economic Behavior &amp; Organization</em>, 2017</span>
         </li>
+      </ul>
 
-        <li class="paper" data-kind="wp">
+      <h3>Working papers</h3>
+      <ul class="papers">
+        <li>
           <a href="https://openaccess.nhh.no/nhh-xmlui/bitstream/handle/11250/3158389/DP%2016.pdf" target="_blank" rel="noopener">To Hide or Not to Hide? How Fear and Futility Affect the Decision to Report a Mistake</a>
-          <span class="authors">with Sarah Bowen, Anna Hochleitner &amp; Richard Mills</span>
+          <span>with Sarah Bowen, Anna Hochleitner &amp; Richard Mills</span>
           <span class="venue">Resubmitted, <em>Experimental Economics</em></span>
         </li>
-        <li class="paper" data-kind="wp">
+        <li>
           <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5136031" target="_blank" rel="noopener">The Unintended Effects of Ethical Decision Aids in Organizations</a>
-          <span class="authors">with Maxim Egorov, Baiba Renerte, Carmen Tanner, Alexander Wagner &amp; Nicole Witt</span>
+          <span>with Maxim Egorov, Baiba Renerte, Carmen Tanner, Alexander Wagner &amp; Nicole Witt</span>
           <span class="venue">Resubmitted, <em>Journal of Economic Behavior &amp; Organization</em></span>
         </li>
-        <li class="paper" data-kind="wp">
+        <li>
           <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5680982" target="_blank" rel="noopener">Organizational Ethics in Action: The Use of Contemplation Questions as Decision Aids in Large Companies</a>
-          <span class="authors">with Baiba Renerte, Carmen Tanner, Alexander Wagner &amp; Nicole Witt</span>
+          <span>with Baiba Renerte, Carmen Tanner, Alexander Wagner &amp; Nicole Witt</span>
           <span class="venue">Revise &amp; Resubmit, <em>Business Ethics, the Environment &amp; Responsibility</em></span>
         </li>
-        <li class="paper" data-kind="wp">
+        <li>
           <a href="https://www.ifo.de/DocDL/cesifo1_wp12999.pdf" target="_blank" rel="noopener">The Stories We Tell: Societal Narratives and Support for the Far Right</a>
-          <span class="authors">with Kai Barron, Anna Hochleitner &amp; Jonas P. Kaiser</span>
+          <span>with Kai Barron, Anna Hochleitner &amp; Jonas P. Kaiser</span>
           <span class="venue">Working paper</span>
         </li>
-        <li class="paper" data-kind="wp">
+        <li>
           <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6838119" target="_blank" rel="noopener">Interactive AI-Guided Ethical Reflection Increases Moral Confidence More Than Ethical Decisions</a>
-          <span class="authors">with Maxim Egorov, Baiba Renerte, Carmen Tanner, Alexander Wagner &amp; Nicole Witt</span>
+          <span>with Maxim Egorov, Baiba Renerte, Carmen Tanner, Alexander Wagner &amp; Nicole Witt</span>
           <span class="venue">Submitted</span>
         </li>
-        <li class="paper" data-kind="wp">
+        <li>
           <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=7364358" target="_blank" rel="noopener">Responsible Decision-making in Digital Projects: The Power and Limits of Ethical Aids</a>
-          <span class="authors">with Carmen Tanner, Christian Hauser &amp; Michael Beier</span>
+          <span>with Carmen Tanner, Christian Hauser &amp; Michael Beier</span>
           <span class="venue">Submitted</span>
         </li>
-        <li class="paper" data-kind="wp">
+        <li>
           <a href="https://www.nottingham.ac.uk/cedex/news/papers/2025-01.aspx" target="_blank" rel="noopener">Measuring Creativity: Associative Thinking in Semantic Networks</a>
-          <span class="authors">with Urs Fischbacher, Chris Starmer &amp; Fabio Tufano</span>
+          <span>with Urs Fischbacher, Chris Starmer &amp; Fabio Tufano</span>
           <span class="venue">Working paper</span>
         </li>
+      </ul>
 
-        <li class="paper" data-kind="wip">
-          <span class="title">A Flexible Method for Distributional Preference Elicitation</span>
-          <span class="authors">with Simon Gächter, Chris Starmer &amp; Fabio Tufano</span>
+      <h3>Work in progress</h3>
+      <ul class="papers">
+        <li>
+          <strong>A Flexible Method for Distributional Preference Elicitation</strong>
+          <span>with Simon Gächter, Chris Starmer &amp; Fabio Tufano</span>
           <span class="venue">Draft available upon request</span>
         </li>
-        <li class="paper" data-kind="wip">
-          <span class="title">Ethical Conflicts in the Workplace: Insights from Employees and Experts</span>
-          <span class="authors">with Nicole Witt, Carmen Tanner, Maxim Egorov, Baiba Renerte &amp; Alexander Wagner</span>
+        <li>
+          <strong>Ethical Conflicts in the Workplace: Insights from Employees and Experts</strong>
+          <span>with Nicole Witt, Carmen Tanner, Maxim Egorov, Baiba Renerte &amp; Alexander Wagner</span>
           <span class="venue">Submitted, manuscript available upon request</span>
         </li>
-      </ol>
+      </ul>
     </section>
 
-    <section id="tools" class="reveal">
-      <h2><span class="mono num">03.</span> Tools</h2>
-      <div class="grid">
-        <a class="project" href="https://www.maltebaader.com/IOS11" target="_blank" rel="noopener">
-          <div class="icon">⭕</div>
-          <h3>IOS11 ↗</h3>
-          <p>An 11-point interactive scale for measuring relationship closeness, extending the widely used Inclusion of Other in the Self scale.</p>
-          <ul class="tags small"><li>Scientific Reports 2024</li></ul>
-        </a>
-        <a class="project" href="https://www.maltebaader.com/FlexiDPE" target="_blank" rel="noopener">
-          <div class="icon">⚖️</div>
-          <h3>Flexi-DPE ↗</h3>
-          <p>Estimates distributional preference parameters from as few as five decisions in modified dictator games.</p>
-          <ul class="tags small"><li>Preference elicitation</li></ul>
-        </a>
-      </div>
+    <section id="tools">
+      <h2>Tools</h2>
+      <ul class="papers">
+        <li>
+          <a href="https://www.maltebaader.com/IOS11" target="_blank" rel="noopener">IOS11</a>
+          <span>An 11-point interactive scale for measuring relationship closeness, extending the Inclusion of Other in the Self scale.</span>
+        </li>
+        <li>
+          <a href="https://www.maltebaader.com/FlexiDPE" target="_blank" rel="noopener">Flexi-DPE</a>
+          <span>Estimates distributional preference parameters from as few as five decisions in modified dictator games.</span>
+        </li>
+      </ul>
     </section>
 
-    <section id="teaching" class="reveal">
-      <h2><span class="mono num">04.</span> Teaching</h2>
+    <section id="teaching">
+      <h2>Teaching</h2>
       <p class="muted">University of Nottingham, 2018–2022</p>
-      <div class="timeline">
-        <div class="role">
-          <h3>Lecturer <span class="muted">(Teaching Associate)</span></h3>
-          <ul>
-            <li>Microeconomic Theory <span class="muted">· PG · 2021/22</span></li>
-            <li>Economic Analysis with Excel: Working with Data Efficiently <span class="muted">· UG · 2022</span></li>
-            <li>Dissertation Supervision <span class="muted">· UG Year 3 · 2021/22</span></li>
-          </ul>
-        </div>
-        <div class="role">
-          <h3>Tutor <span class="muted">(Graduate Teaching Assistant)</span></h3>
-          <ul>
-            <li>Dissertation Tutorials <span class="muted">· UG Year 3 · 2021</span></li>
-            <li>Applied Econometrics I <span class="muted">· UG Year 2 · 2019–2021</span></li>
-            <li>Applied Econometrics II <span class="muted">· UG Year 2 · 2020</span></li>
-            <li>Quantitative Methods <span class="muted">· UG Year 1 · 2019</span></li>
-            <li>Quantitative Economics <span class="muted">· UG Year 1 · 2018/19</span></li>
-          </ul>
-        </div>
-      </div>
-    </section>
 
-    <section id="contact" class="reveal">
-      <h2><span class="mono num">05.</span> Contact</h2>
-      <div class="card center">
-        <p>
-          FAIR, Norwegian School of Economics<br>
-          Helleveien 30, 5045 Bergen, Norway
-        </p>
-        <a class="btn primary" href="mailto:malte.baader@nhh.no">malte.baader@nhh.no ✉</a>
-      </div>
+      <h3>Lecturer (Teaching Associate)</h3>
+      <ul class="plain">
+        <li>Microeconomic Theory <span class="muted">· Postgraduate · 2021/22</span></li>
+        <li>Economic Analysis with Excel: Working with Data Efficiently <span class="muted">· Undergraduate · 2022</span></li>
+        <li>Dissertation Supervision <span class="muted">· Undergraduate · 2021/22</span></li>
+      </ul>
+
+      <h3>Tutor (Graduate Teaching Assistant)</h3>
+      <ul class="plain">
+        <li>Dissertation Tutorials <span class="muted">· Undergraduate · 2021</span></li>
+        <li>Applied Econometrics I <span class="muted">· Undergraduate · 2019–2021</span></li>
+        <li>Applied Econometrics II <span class="muted">· Undergraduate · 2020</span></li>
+        <li>Quantitative Methods <span class="muted">· Undergraduate · 2019</span></li>
+        <li>Quantitative Economics <span class="muted">· Undergraduate · 2018/19</span></li>
+      </ul>
     </section>
   </main>
 
-  <footer class="mono">
-    © <span id="year"></span> Malte Baader
+  <footer>
+    <p>FAIR, Norwegian School of Economics · Helleveien 30, 5045 Bergen, Norway</p>
+    <p><a href="mailto:malte.baader@nhh.no">malte.baader@nhh.no</a></p>
   </footer>
-
-  <script src="script.js"></script>
 </body>
 </html>
