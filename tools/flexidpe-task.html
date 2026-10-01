@@ -6,421 +6,332 @@
 <title>Flexi-DPE task</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-  div.a, div.b {
-    margin-left: 15%;
-    margin-right: 15%;
-    line-height: 1.2em;
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 16px;
+    color: #000;
+    background: #fff;
   }
 
-  div.a { text-align: left; }
-  div.b { text-align: center; }
+  .versions { text-align: center; }
 
-  .responsive {
-    width: auto;
-    height: auto;
+  .versions button {
+    background-color: #deefff;
+    border: 1px solid black;
+    padding: 10px 20px;
+    margin: 4px 2px;
+    font: inherit;
+    border-radius: 10px;
+    cursor: pointer;
   }
+
+  .versions button:hover { background-color: #cce0f5; }
+  .versions button.active { background-color: #9cc8f0; }
+
+  #instructions { max-width: 640px; margin: 0 auto; }
+  #instructions .title { text-align: center; font-size: 25px; margin-bottom: 1em; }
+
+  #task { text-align: center; }
 
   canvas {
-    border:1px solid #d3d3d3;
+    display: block;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 420px;
+    height: auto;
+    border: 1px solid #d3d3d3;
     background-color: #fcfcfc;
-    background-image: repeating-linear-gradient(
-      0deg, transparent, transparent 29px, #CCC 29px, #CCC 30px
-    ),
-    repeating-linear-gradient(
-      -90deg, transparent, transparent 29px, #CCC 29px, #CCC 30px
-    );
+    background-image:
+      repeating-linear-gradient(0deg, transparent, transparent 29px, #CCC 29px, #CCC 30px),
+      repeating-linear-gradient(-90deg, transparent, transparent 29px, #CCC 29px, #CCC 30px);
     background-size: 30px 30px;
     background-position: right 30px bottom 30px;
-    margin-left: 0%;
-    top: 0%;
+    cursor: pointer;
+    touch-action: none; /* let pointer drags work on touch screens */
   }
+
+  canvas:focus-visible { outline: 2px solid #337ab7; outline-offset: 2px; }
 
   .buttonSubmit {
     background-color: #ffffff;
     color: black;
     border: 1px solid #a7a7a7;
     padding: 10px 30px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
     font-size: 16px;
     margin: 4px 2px;
     cursor: pointer;
     border-radius: 5px;
-    width: 20%;
+    min-width: 20%;
   }
 
-  .buttonSubmit:hover {
-    background-color: #afafaf;
-    border: 1px solid #a7a7a7;
-  }
+  .buttonSubmit:hover { background-color: #afafaf; }
 
-  table.frame {
-    width: 100%;
-    border: 0px;
-    text-align: center;
-  }
-
-  #button2, #button3, #button4, #button5 {
-  background-color: #deefff;
-  border: 1px solid black;
-  padding: 10px 20px; /* Adjust as needed for size */
-  font-family: inherit; 
-  font-size: inherit; 
-  border-radius: 10px;
-}
-
-#button2:hover, #button3:hover, #button4:hover, #button5:hover {
-  background-color: #cce0f5; /* a slightly darker blue */
-}
+  .you { color: green; }
+  .other { color: blue; }
+  #message { color: #b00020; min-height: 1.2em; }
+  #finish { text-align: center; display: none; }
 </style>
 </head>
-<body onload="startGame()">
+<body>
 
-<div style="text-align: center;">
-  Please select which version of Flexi-DPE you would like to try out:<br>
-  <br>
-  <button id="button2">DPE-20</button>
-  <button id="button3">DPE-10</button>
-  <button id="button4">DPE-5</button>
-  <button id="button5">DPE-3</button>
+<div class="versions">
+  Please select which version of Flexi-DPE you would like to try out:<br><br>
+  <button type="button" data-rounds="20">DPE-20</button>
+  <button type="button" data-rounds="10">DPE-10</button>
+  <button type="button" data-rounds="5">DPE-5</button>
+  <button type="button" data-rounds="3" class="active">DPE-3</button>
 </div>
 
 <br>
 
 <div id="instructions">
-  <div style="text-align:center;font-size:25px">Instructions</div><br>
-  <div style="text-align:left;margin-left: 10%;">
-    In this study, you will make <b><span id="decisionsCount">3</span> decisions</b> to allocate Tokens between yourself and another person using a screen shown below.
-    <br><br>
-    Choose allocations by clicking anywhere on the blue line. This places a red square that you can move. Your current allocation is also shown below the figure.<br><br>
-    Confirm with 'Submit'.
-  </div>
+  <div class="title">Instructions</div>
+  In this study, you will make <b><span id="decisionsCount">3</span> decisions</b> to allocate Tokens between yourself and another person using a screen shown below.
+  <br><br>
+  Choose allocations by clicking anywhere on the blue line. This places a red square that you can drag along the line (or move with the arrow keys). Your current allocation is also shown below the figure.<br><br>
+  Confirm with 'Submit'.
 </div>
 
 <br>
 
-<table class="frame" id="table">
-  <td>
-    <ul id="myList">
-      <h3>
-        Please allocate Tokens between <font color="green">You</font> and 
-        <font color="blue">one Other person</font>.
-      </h3>
-    </ul>
-    <h3>
-      You allocate <span id="demo" style="color:green;">&nbsp; &nbsp;</span> Tokens to 
-      <font color="green">You</font>, and 
-      <span id="demo2" style="color:blue;">&nbsp; &nbsp;</span> Tokens to 
-      <font color="blue">one Other person</font>.
-    </h3>
+<div id="task">
+  <h3>
+    Decision <span id="period">1</span> of <span id="periodTotal">3</span>:
+    please allocate Tokens between <span class="you">You</span> and <span class="other">one Other person</span>.
+  </h3>
+  <canvas id="screen" width="420" height="420" tabindex="0"
+          aria-label="Allocation screen. Click or drag on the blue line, or use the arrow keys, to choose an allocation."></canvas>
+  <h3>
+    You allocate <span id="toYou" class="you">&nbsp;&nbsp;</span> Tokens to <span class="you">You</span>, and
+    <span id="toOther" class="other">&nbsp;&nbsp;</span> Tokens to <span class="other">one Other person</span>.
+  </h3>
+  <p id="message" role="status"></p>
+  <button type="button" class="buttonSubmit" id="submit">Submit</button>
+</div>
 
-    <div class="button2">
-      <button type="button" class="buttonSubmit" onclick="saveInput1()">Submit</button>
-    </div>
-  </td>
-</table>
-
-<div id="finish" style="text-align:center;display:none;width:100%;">
+<div id="finish">
   <h3>You have finished the decisions.</h3>
 </div>
 
 <script>
-  // Global variables
-  var rounds = 3; // Default rounds
-  var Period = 1; // Start with period 1
-  var isGamePieceVisible = false;
-  var isMousedown = false;
-
-  var my3, other3;
-  var my_stored = [];
-  var other_stored = [];
-  var qx_stored = [];
-  var qy_stored = [];
-
-  // Data arrays
-  var qy20 = [100,100,100,100,100,100,100,100,100,100,84,58,41,30,22,17,14,12,11,10];
-  var qx20 = [10,11,12,14,17,22,30,41,58,84,100,100,100,100,100,100,100,100,100,100];
-
-  var qy10 = [100,100,100,100,100,70,35,20,13,10];
-  var qx10 = [10,13,20,35,70,100,100,100,100,100];
-
-  var qy5 = [100,100,50,26,12];
-  var qx5 = [12,26,50,100,100];
-
-  var qy3 = [100,50,15];
-  var qx3 = [15,50,100];
-
-  var orderPots = [];
-  var qx, qy, p, modqy, modcons, widthpoint;
-  
-  // Add event listeners to the buttons
-  document.getElementById("button2").addEventListener("click", () => initializeRounds(20));
-  document.getElementById("button3").addEventListener("click", () => initializeRounds(10));
-  document.getElementById("button4").addEventListener("click", () => initializeRounds(5));
-  document.getElementById("button5").addEventListener("click", () => initializeRounds(3));
-
-  // Initialize rounds and set up orderPots
-  function initializeRounds(num) {
-    document.getElementById("instructions").style.display = "block";
-    document.getElementById("table").style.display = "table";
-    document.getElementById("finish").style.display = "none";
-    rounds = num;
-    document.getElementById("decisionsCount").textContent = rounds;
-    Period = 1;
-    orderPots = createOrderPots(rounds);
-    resetGame();
-  }
-
-  // Create a random order array for pots
-  function createOrderPots(num) {
-    var arr = [];
-    while (arr.length < num) {
-      var r = Math.floor(Math.random() * num) + 1;
-      if (arr.indexOf(r) === -1) arr.push(r);
-    }
-    return arr;
-  }
-
-  // Retrieve qx, qy based on current round and period
-  function setQValues() {
-    var currentSet = orderPots[Period - 1] - 1;
-    if (rounds == 20) {
-      qx = qx20[currentSet];
-      qy = qy20[currentSet];
-    } else if (rounds == 10) {
-      qx = qx10[currentSet];
-      qy = qy10[currentSet];
-    } else if (rounds == 5) {
-      qx = qx5[currentSet];
-      qy = qy5[currentSet];
-    } else {
-      qx = qx3[currentSet];
-      qy = qy3[currentSet];
-    }
-
-    p = qy / qx; 
-    modqy = 360 - 3 * qy;
-    modcons = modqy - p * 60;
-    widthpoint = (qx / 10 + 2) * 30;
-  }
-
-  function resetGame() {
-    clearInterval(myGameArea.interval);
-    myGameArea.clear();
-    myGamePiece = null;
-    isGamePieceVisible = false;
-    setQValues();
-    document.getElementById("demo").innerHTML = "&nbsp;&nbsp;";
-    document.getElementById("demo2").innerHTML = "&nbsp;&nbsp;";
-    startGame();
-  }
-
-  // Game area and component definitions
-  var myGamePiece;
-  var myGameArea = {
-    canvas: document.createElement("canvas"),
-    start: function() {
-      this.canvas.width = 420;
-      this.canvas.height = 420;
-      this.canvas.style.cursor = "pointer";
-      this.context = this.canvas.getContext("2d");
-
-      var list = document.getElementById("myList");
-      list.insertBefore(this.canvas, list.childNodes[25]);
-
-      this.interval = setInterval(updateGameArea, 20);
-      var rect = this.canvas.getBoundingClientRect();
-      var l = rect.left;
-      var t = rect.top;
-
-      // Mouse events
-      this.canvas.addEventListener('click', (e) => {
-        isGamePieceVisible = true;
-        myGameArea.x = e.clientX - l;
-        myGameArea.y = e.clientY - t;
-      });
-
-      this.canvas.addEventListener('mousedown', () => {
-        isMousedown = true;
-      });
-
-      this.canvas.addEventListener('mouseup', () => {
-        isMousedown = false;
-      });
-
-      this.canvas.addEventListener("mousemove", (event) => {
-        if (isMousedown) {
-          myGameArea.x = event.clientX - l;
-          myGameArea.y = event.clientY - t;
-        }
-      });
-
-      window.addEventListener('keydown', (e) => {
-        myGameArea.key = e.keyCode;
-      });
-
-      window.addEventListener('keyup', () => {
-        myGameArea.key = false;
-      });
-    },
-    clear: function() {
-      this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    }
+(function () {
+  // Budget sets: maximum Tokens to You (qy) and to the Other person (qx).
+  var BUDGETS = {
+    20: { qy: [100,100,100,100,100,100,100,100,100,100,84,58,41,30,22,17,14,12,11,10],
+          qx: [10,11,12,14,17,22,30,41,58,84,100,100,100,100,100,100,100,100,100,100] },
+    10: { qy: [100,100,100,100,100,70,35,20,13,10],
+          qx: [10,13,20,35,70,100,100,100,100,100] },
+    5:  { qy: [100,100,50,26,12],
+          qx: [12,26,50,100,100] },
+    3:  { qy: [100,50,15],
+          qx: [15,50,100] }
   };
 
-  function component(width, height, color, x, y) {
-    this.width = width;
-    this.height = height;
-    this.x = x;
-    this.y = y;    
-    this.update = function() {
-      var ctx = myGameArea.context;
-      // Draw the red square
-      ctx.fillStyle = color;
-      ctx.fillRect(this.x, this.y, this.width, this.height);
+  // Screen geometry (canvas pixels): origin at (60, 360), 3 px per Token.
+  var ORIGIN_X = 60, ORIGIN_Y = 360, SCALE = 3, SQUARE = 10;
 
-      // Draw the blue line and axes
-      ctx.fillStyle = "#deefff";
-      ctx.fillRect(0, 0, 60, 400);
-      ctx.fillRect(0, 360, 400, 360);
-      ctx.fillRect(0, 0, 400, 30);
-      ctx.fillRect(391, 0, 400, 420);
+  var canvas = document.getElementById("screen");
+  var ctx = canvas.getContext("2d");
 
-      ctx.beginPath();
-      ctx.lineWidth = 1;
-      ctx.moveTo(60, 420 - (qy / 10 + 2) * 30);
-      ctx.lineTo(widthpoint, 360); 
-      ctx.strokeStyle = "blue";
-      ctx.stroke();
+  var rounds, period, order, qx, qy;
+  var t = null;          // position on the budget line: 0 = all to You, 1 = all to Other
+  var dragging = false;
 
-      ctx.beginPath();
-      ctx.moveTo(60, 30);
-      ctx.lineTo(60, 360);
-      ctx.lineWidth = 1;
-      ctx.strokeStyle = "black";
-      ctx.stroke();
+  // Results, kept for anyone integrating the task into an experiment.
+  var results = { you: [], other: [], qx: [], qy: [] };
+  window.flexiDPEResults = results;
 
-      ctx.moveTo(60, 360);
-      ctx.lineTo(390, 360);
-      ctx.stroke();
+  function shuffledOrder(n) {
+    var a = [];
+    for (var i = 0; i < n; i++) a.push(i);
+    for (var j = n - 1; j > 0; j--) {
+      var k = Math.floor(Math.random() * (j + 1));
+      var tmp = a[j]; a[j] = a[k]; a[k] = tmp;
+    }
+    return a;
+  }
 
-      // X-axis ticks
-      ctx.font = "12px Arial";
-      ctx.fillStyle = "black";
-      ctx.textAlign = "center";
-      for (var i = 1; i < 11; i++){
-        ctx.fillText(i * 10, (i+2)*30, 375);
-      }
+  // End points of the budget line: A = (0 to Other, qy to You), B = (qx to Other, 0 to You).
+  function lineA() { return { x: ORIGIN_X, y: ORIGIN_Y - SCALE * qy }; }
+  function lineB() { return { x: ORIGIN_X + SCALE * qx, y: ORIGIN_Y }; }
 
-      // Y-axis ticks
-      ctx.textAlign = "right";
-      ctx.fillText(0, 55, 365);
-      for (var j=10; j>0; j--){
-        ctx.fillText(j*10, 55, 425-(j+2)*30);
-      }
+  function pointAt(tt) {
+    var a = lineA(), b = lineB();
+    return { x: a.x + tt * (b.x - a.x), y: a.y + tt * (b.y - a.y) };
+  }
 
-      // Y-axis label (Tokens to You)
-      ctx.textAlign = "center";
-      ctx.font = "20px Arial";
-      ctx.fillStyle = "green";
-      var labelYou = "Tokens to You".split("");
-      var yStart = 100;
-      labelYou.forEach(function(char) {
-        ctx.fillText(char, 28, yStart);
-        yStart += 20;
-      });
+  // Closest point on the budget line to (px, py), so dragging works in both x and y.
+  function project(px, py) {
+    var a = lineA(), b = lineB();
+    var dx = b.x - a.x, dy = b.y - a.y;
+    var tt = ((px - a.x) * dx + (py - a.y) * dy) / (dx * dx + dy * dy);
+    return Math.max(0, Math.min(1, tt));
+  }
 
-      // X-axis label (Tokens to Other)
-      ctx.fillStyle = "blue"; 
-      ctx.fillText("Tokens to Other person", 225, 398);
-      ctx.fillStyle = "black";
+  function allocation() {
+    var p = pointAt(t);
+    return { you: (ORIGIN_Y - p.y) / SCALE, other: (p.x - ORIGIN_X) / SCALE };
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Light-blue margins around the plotting area
+    ctx.fillStyle = "#deefff";
+    ctx.fillRect(0, 0, 60, 420);
+    ctx.fillRect(0, 360, 420, 60);
+    ctx.fillRect(0, 0, 420, 30);
+    ctx.fillRect(391, 0, 29, 420);
+
+    // Axes
+    ctx.strokeStyle = "black";
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(60, 30); ctx.lineTo(60, 360);
+    ctx.moveTo(60, 360); ctx.lineTo(390, 360);
+    ctx.stroke();
+
+    // Ticks
+    ctx.font = "12px Arial";
+    ctx.fillStyle = "black";
+    ctx.textAlign = "center";
+    for (var i = 1; i < 11; i++) ctx.fillText(i * 10, (i + 2) * 30, 375);
+    ctx.textAlign = "right";
+    ctx.fillText(0, 55, 365);
+    for (var j = 10; j > 0; j--) ctx.fillText(j * 10, 55, 425 - (j + 2) * 30);
+
+    // Axis labels
+    ctx.textAlign = "center";
+    ctx.font = "20px Arial";
+    ctx.fillStyle = "green";
+    "Tokens to You".split("").forEach(function (ch, n) { ctx.fillText(ch, 28, 100 + 20 * n); });
+    ctx.fillStyle = "blue";
+    ctx.fillText("Tokens to Other person", 225, 398);
+
+    // Budget line
+    var a = lineA(), b = lineB();
+    ctx.strokeStyle = "blue";
+    ctx.beginPath();
+    ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y);
+    ctx.stroke();
+
+    // Chosen allocation
+    if (t !== null) {
+      var p = pointAt(t);
+      ctx.fillStyle = "red";
+      ctx.fillRect(p.x - SQUARE / 2, p.y - SQUARE / 2, SQUARE, SQUARE);
+    }
+  }
+
+  function showAllocation() {
+    if (t === null) {
+      document.getElementById("toYou").innerHTML = "&nbsp;&nbsp;";
+      document.getElementById("toOther").innerHTML = "&nbsp;&nbsp;";
+      return;
+    }
+    var al = allocation();
+    document.getElementById("toYou").textContent = al.you.toFixed(1);
+    document.getElementById("toOther").textContent = al.other.toFixed(1);
+  }
+
+  function setT(tt) {
+    t = tt;
+    document.getElementById("message").textContent = "";
+    showAllocation();
+    draw();
+  }
+
+  // Convert a pointer event to canvas pixels (works when the canvas is scaled or the page scrolled).
+  function toCanvas(e) {
+    var r = canvas.getBoundingClientRect();
+    return {
+      x: (e.clientX - r.left) * (canvas.width / r.width),
+      y: (e.clientY - r.top) * (canvas.height / r.height)
     };
   }
 
-  function startGame() {
-    myGamePiece = new component(10, 10, "red", 10, 10);
-    myGameArea.start();
+  canvas.addEventListener("pointerdown", function (e) {
+    dragging = true;
+    canvas.setPointerCapture(e.pointerId);
+    var p = toCanvas(e);
+    setT(project(p.x, p.y));
+    e.preventDefault();
+  });
+  canvas.addEventListener("pointermove", function (e) {
+    if (!dragging) return;
+    var p = toCanvas(e);
+    setT(project(p.x, p.y));
+  });
+  function stopDrag() { dragging = false; }
+  canvas.addEventListener("pointerup", stopDrag);
+  canvas.addEventListener("pointercancel", stopDrag);
+
+  // Arrow keys move the square along the line in steps of 0.1 Token to the Other person.
+  canvas.addEventListener("keydown", function (e) {
+    var dir = 0;
+    if (e.key === "ArrowLeft" || e.key === "ArrowUp") dir = -1;
+    if (e.key === "ArrowRight" || e.key === "ArrowDown") dir = 1;
+    if (!dir) return;
+    e.preventDefault();
+    var step = 0.1 / qx;
+    setT(Math.max(0, Math.min(1, (t === null ? 0.5 : t) + dir * step)));
+  });
+
+  function loadDecision() {
+    var idx = order[period - 1];
+    qx = BUDGETS[rounds].qx[idx];
+    qy = BUDGETS[rounds].qy[idx];
+    t = null;
+    document.getElementById("period").textContent = period;
+    showAllocation();
+    draw();
   }
 
-  function updateOutputs(my2, other2) {
-    document.getElementById("demo").innerHTML = ((-my2+360)/3).toFixed(1);
-    my3 = ((-my2+360)/3);
-
-    document.getElementById("demo2").innerHTML = ((other2-60)/3).toFixed(1);
-    other3 = ((other2-60)/3);
+  function start(n) {
+    rounds = n;
+    period = 1;
+    order = shuffledOrder(n);
+    results.you = []; results.other = []; results.qx = []; results.qy = [];
+    document.getElementById("decisionsCount").textContent = n;
+    document.getElementById("periodTotal").textContent = n;
+    document.getElementById("instructions").style.display = "block";
+    document.getElementById("task").style.display = "block";
+    document.getElementById("finish").style.display = "none";
+    document.getElementById("message").textContent = "";
+    document.querySelectorAll(".versions button").forEach(function (b) {
+      b.classList.toggle("active", +b.dataset.rounds === n);
+    });
+    loadDecision();
   }
 
-  function handleArrows() {
-    if (!myGameArea.key) return;
-    // Left or Up arrow
-    if (myGameArea.key == 37 || myGameArea.key == 38) {
-      myGameArea.x -= 0.05;
-    }
-    // Right or Down arrow
-    if (myGameArea.key == 39 || myGameArea.key == 40) {
-      myGameArea.x += 0.05;
-    }
-  }
-
-  function clampPosition() {
-    // The line extends from x=60 to x=(3*qx+60)
-    var minX = 60;
-    var maxX = 3*qx+60;
-
-    if (myGameArea.x < minX) myGameArea.x = minX;
-    if (myGameArea.x > maxX) myGameArea.x = maxX;
-  }
-
-  function updateGameArea() {
-    myGameArea.clear();
-    if (isGamePieceVisible) {
-      handleArrows();
-      clampPosition();
-
-      var adjustedX = -5 + myGameArea.x;
-      var adjustedY = -5 + p * myGameArea.x + modcons;
-
-      myGamePiece.x = adjustedX;
-      myGamePiece.y = adjustedY;
-
-      var other2 = 5 + myGamePiece.x;
-      var my2 = 5 + myGamePiece.y;
-      updateOutputs(my2, other2);
-    }
-    myGamePiece.update();
-  }
-
-  function saveInput1() {
-    if (!isGamePieceVisible || my3 === undefined) {
-      alert("You have not yet decided!");
+  document.getElementById("submit").addEventListener("click", function () {
+    if (t === null) {
+      document.getElementById("message").textContent = "You have not yet decided!";
       return;
     }
+    var al = allocation();
+    results.you.push(al.you);
+    results.other.push(al.other);
+    results.qx.push(qx);
+    results.qy.push(qy);
 
-    my_stored[Period - 1] = my3;
-    other_stored[Period - 1] = other3;
-    qx_stored[Period - 1] = qx;
-    qy_stored[Period - 1] = qy;
-
-    toggleGamePieceVisibility();
-
-    if (Period < rounds) {
-      Period++;
-      resetGame();
+    if (period < rounds) {
+      period++;
+      loadDecision();
     } else {
       document.getElementById("instructions").style.display = "none";
-      document.getElementById("table").style.display = "none";
+      document.getElementById("task").style.display = "none";
       document.getElementById("finish").style.display = "block";
     }
-  }
+  });
 
-  function toggleGamePieceVisibility() {
-    isGamePieceVisible = !isGamePieceVisible;
-  }
+  document.querySelectorAll(".versions button").forEach(function (b) {
+    b.addEventListener("click", function () { start(+b.dataset.rounds); });
+  });
 
-  // Initialize the random order for the default number of rounds
-  orderPots = createOrderPots(rounds);
-  setQValues();
+  start(3);
+})();
 </script>
 </body>
 </html>
