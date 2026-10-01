@@ -5,113 +5,167 @@
 <meta name="robots" content="noindex">
 <title>Flexi-DPE task</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
+  :root {
+    --text: #1f2328;
+    --muted: #6b7280;
+    --border: #e5e7eb;
+    --accent: #2f5d8a;
+    --you: #2e7d5b;
+    --other: #2f5d8a;
+    --marker: #d9480f;
+  }
+
+  * { box-sizing: border-box; }
+
   body {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: "Inter", system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
     margin: 0;
-    padding: 16px;
-    color: #000;
+    padding: 24px 16px 32px;
+    color: var(--text);
     background: #fff;
   }
 
-  .versions { text-align: center; }
+  .wrap { max-width: 560px; margin: 0 auto; }
 
-  .versions button {
-    background-color: #deefff;
-    border: 1px solid black;
-    padding: 10px 20px;
-    margin: 4px 2px;
-    font: inherit;
-    border-radius: 10px;
-    cursor: pointer;
+  /* Version picker */
+  .versions { text-align: center; }
+  .versions p { margin: 0 0 0.75rem; color: var(--muted); font-size: 0.95rem; }
+  .segmented {
+    display: inline-flex; padding: 4px; gap: 4px;
+    background: #f3f4f6; border-radius: 999px;
+  }
+  .segmented button {
+    font: inherit; font-size: 0.9rem; font-weight: 500;
+    padding: 0.45rem 1rem; border: 0; border-radius: 999px;
+    background: transparent; color: var(--muted); cursor: pointer;
+    transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+  }
+  .segmented button:hover { color: var(--text); }
+  .segmented button.active {
+    background: #fff; color: var(--accent);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
   }
 
-  .versions button:hover { background-color: #cce0f5; }
-  .versions button.active { background-color: #9cc8f0; }
+  /* Instructions */
+  #instructions {
+    margin: 1.75rem 0 1.5rem; padding: 1rem 1.25rem;
+    background: #f8fafc; border: 1px solid var(--border); border-radius: 10px;
+    font-size: 0.93rem;
+  }
+  #instructions h2 { margin: 0 0 0.4rem; font-size: 1rem; font-weight: 600; }
+  #instructions p { margin: 0; }
+  #instructions p + p { margin-top: 0.5rem; }
 
-  #instructions { max-width: 640px; margin: 0 auto; }
-  #instructions .title { text-align: center; font-size: 25px; margin-bottom: 1em; }
-
-  #task { text-align: center; }
+  /* Task */
+  .task-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin-bottom: 0.75rem; }
+  .task-head h3 { margin: 0; font-size: 1rem; font-weight: 600; }
+  .progress { display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end; }
+  .progress span { width: 8px; height: 8px; border-radius: 50%; background: var(--border); }
+  .progress span.done { background: var(--accent); }
+  .progress span.current { background: var(--accent); box-shadow: 0 0 0 3px rgba(47, 93, 138, 0.2); }
+  .counter { color: var(--muted); font-size: 0.85rem; white-space: nowrap; }
 
   canvas {
-    display: block;
-    margin: 0 auto;
-    width: 100%;
-    max-width: 420px;
-    height: auto;
-    border: 1px solid #d3d3d3;
-    background-color: #fcfcfc;
-    background-image:
-      repeating-linear-gradient(0deg, transparent, transparent 29px, #CCC 29px, #CCC 30px),
-      repeating-linear-gradient(-90deg, transparent, transparent 29px, #CCC 29px, #CCC 30px);
-    background-size: 30px 30px;
-    background-position: right 30px bottom 30px;
-    cursor: pointer;
+    display: block; margin: 0 auto;
+    width: 100%; max-width: 420px; height: auto; aspect-ratio: 1;
+    border: 1px solid var(--border); border-radius: 10px;
+    cursor: crosshair;
     touch-action: none; /* let pointer drags work on touch screens */
   }
+  canvas:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
-  canvas:focus-visible { outline: 2px solid #337ab7; outline-offset: 2px; }
+  .readout { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin: 1rem auto 0; max-width: 420px; }
+  .stat { border: 1px solid var(--border); border-radius: 10px; padding: 0.6rem 0.9rem; }
+  .stat .label { font-size: 0.8rem; color: var(--muted); }
+  .stat .value { font-size: 1.5rem; font-weight: 600; line-height: 1.3; font-variant-numeric: tabular-nums; }
+  .stat.you .value { color: var(--you); }
+  .stat.other .value { color: var(--other); }
+  .stat .value.empty { color: #c4c8cf; }
 
-  .buttonSubmit {
-    background-color: #ffffff;
-    color: black;
-    border: 1px solid #a7a7a7;
-    padding: 10px 30px;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 5px;
-    min-width: 20%;
+  .actions { text-align: center; margin-top: 1.25rem; }
+  #message { color: #b42318; font-size: 0.9rem; min-height: 1.4em; margin: 0 0 0.5rem; }
+  .btn-primary {
+    font: inherit; font-weight: 500;
+    padding: 0.65rem 2.25rem; border: 0; border-radius: 8px;
+    background: var(--accent); color: #fff; cursor: pointer;
+    transition: filter 0.15s, transform 0.1s;
   }
+  .btn-primary:hover { filter: brightness(1.1); }
+  .btn-primary:active { transform: translateY(1px); }
 
-  .buttonSubmit:hover { background-color: #afafaf; }
-
-  .you { color: green; }
-  .other { color: blue; }
-  #message { color: #b00020; min-height: 1.2em; }
-  #finish { text-align: center; display: none; }
+  /* Finish */
+  #finish { display: none; text-align: center; margin-top: 2rem; }
+  #finish h3 { margin: 0 0 0.25rem; font-size: 1.15rem; }
+  #finish p { margin: 0 0 1rem; color: var(--muted); font-size: 0.93rem; }
+  #summary { border-collapse: collapse; margin: 0 auto 1.25rem; font-size: 0.9rem; font-variant-numeric: tabular-nums; }
+  #summary th, #summary td { padding: 0.35rem 0.9rem; border-bottom: 1px solid var(--border); text-align: right; }
+  #summary th { font-weight: 500; color: var(--muted); }
+  #summary td:first-child, #summary th:first-child { text-align: left; }
+  .btn-secondary {
+    font: inherit; font-size: 0.9rem; font-weight: 500;
+    padding: 0.5rem 1.25rem; border: 1px solid var(--border); border-radius: 8px;
+    background: #fff; color: var(--text); cursor: pointer;
+  }
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
 </style>
 </head>
 <body>
+<div class="wrap">
 
-<div class="versions">
-  Please select which version of Flexi-DPE you would like to try out:<br><br>
-  <button type="button" data-rounds="20">DPE-20</button>
-  <button type="button" data-rounds="10">DPE-10</button>
-  <button type="button" data-rounds="5">DPE-5</button>
-  <button type="button" data-rounds="3" class="active">DPE-3</button>
-</div>
+  <div class="versions">
+    <p>Choose a version of Flexi-DPE to try:</p>
+    <div class="segmented" role="group" aria-label="Number of decisions">
+      <button type="button" data-rounds="20">DPE-20</button>
+      <button type="button" data-rounds="10">DPE-10</button>
+      <button type="button" data-rounds="5">DPE-5</button>
+      <button type="button" data-rounds="3" class="active">DPE-3</button>
+    </div>
+  </div>
 
-<br>
+  <div id="instructions">
+    <h2>Instructions</h2>
+    <p>You will make <b><span id="decisionsCount">3</span> decisions</b> to allocate Tokens between yourself and another person.</p>
+    <p>Click anywhere on the line to choose an allocation, then drag the marker (or use the arrow keys) to adjust it. Confirm with <b>Submit</b>.</p>
+  </div>
 
-<div id="instructions">
-  <div class="title">Instructions</div>
-  In this study, you will make <b><span id="decisionsCount">3</span> decisions</b> to allocate Tokens between yourself and another person using a screen shown below.
-  <br><br>
-  Choose allocations by clicking anywhere on the blue line. This places a red square that you can drag along the line (or move with the arrow keys). Your current allocation is also shown below the figure.<br><br>
-  Confirm with 'Submit'.
-</div>
+  <div id="task">
+    <div class="task-head">
+      <h3>Allocate Tokens between <span style="color:var(--you)">You</span> and <span style="color:var(--other)">the Other person</span></h3>
+      <span class="counter"><span id="period">1</span> / <span id="periodTotal">3</span></span>
+    </div>
 
-<br>
+    <canvas id="screen" tabindex="0"
+            aria-label="Allocation screen. Click or drag on the line, or use the arrow keys, to choose an allocation."></canvas>
 
-<div id="task">
-  <h3>
-    Decision <span id="period">1</span> of <span id="periodTotal">3</span>:
-    please allocate Tokens between <span class="you">You</span> and <span class="other">one Other person</span>.
-  </h3>
-  <canvas id="screen" width="420" height="420" tabindex="0"
-          aria-label="Allocation screen. Click or drag on the blue line, or use the arrow keys, to choose an allocation."></canvas>
-  <h3>
-    You allocate <span id="toYou" class="you">&nbsp;&nbsp;</span> Tokens to <span class="you">You</span>, and
-    <span id="toOther" class="other">&nbsp;&nbsp;</span> Tokens to <span class="other">one Other person</span>.
-  </h3>
-  <p id="message" role="status"></p>
-  <button type="button" class="buttonSubmit" id="submit">Submit</button>
-</div>
+    <div class="readout" aria-live="polite">
+      <div class="stat you"><div class="label">Tokens to You</div><div class="value empty" id="toYou">–</div></div>
+      <div class="stat other"><div class="label">Tokens to Other</div><div class="value empty" id="toOther">–</div></div>
+    </div>
 
-<div id="finish">
-  <h3>You have finished the decisions.</h3>
+    <div class="progress" id="progress" aria-hidden="true" style="justify-content:center;margin-top:1rem"></div>
+
+    <div class="actions">
+      <p id="message" role="status"></p>
+      <button type="button" class="btn-primary" id="submit">Submit</button>
+    </div>
+  </div>
+
+  <div id="finish">
+    <h3>You have finished the decisions.</h3>
+    <p>Here is what you chose:</p>
+    <table id="summary">
+      <thead><tr><th>Decision</th><th>Max to You</th><th>Max to Other</th><th>You</th><th>Other</th></tr></thead>
+      <tbody></tbody>
+    </table>
+    <button type="button" class="btn-secondary" id="again">Try again</button>
+  </div>
+
 </div>
 
 <script>
@@ -128,8 +182,13 @@
           qx: [15,50,100] }
   };
 
-  // Screen geometry (canvas pixels): origin at (60, 360), 3 px per Token.
-  var ORIGIN_X = 60, ORIGIN_Y = 360, SCALE = 3, SQUARE = 10;
+  // Screen geometry in logical pixels: 420 x 420, origin at (60, 360), 3 px per Token.
+  var SIZE = 420, ORIGIN_X = 60, ORIGIN_Y = 360, SCALE = 3, MARKER_R = 7;
+  var COLORS = {
+    grid: "#eef0f3", axis: "#9aa1ab", tick: "#6b7280",
+    you: "#2e7d5b", other: "#2f5d8a", line: "#2f5d8a", marker: "#d9480f"
+  };
+  var FONT = '"Inter", system-ui, sans-serif';
 
   var canvas = document.getElementById("screen");
   var ctx = canvas.getContext("2d");
@@ -137,10 +196,19 @@
   var rounds, period, order, qx, qy;
   var t = null;          // position on the budget line: 0 = all to You, 1 = all to Other
   var dragging = false;
+  var hover = false;
 
   // Results, kept for anyone integrating the task into an experiment.
   var results = { you: [], other: [], qx: [], qy: [] };
   window.flexiDPEResults = results;
+
+  // Sharp rendering on high-DPI screens; drawing code keeps using 420 x 420 logical pixels.
+  function setupCanvas() {
+    var dpr = window.devicePixelRatio || 1;
+    canvas.width = SIZE * dpr;
+    canvas.height = SIZE * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
 
   function shuffledOrder(n) {
     var a = [];
@@ -175,64 +243,105 @@
   }
 
   function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, SIZE, SIZE);
+    ctx.fillStyle = "#fff";
+    ctx.fillRect(0, 0, SIZE, SIZE);
 
-    // Light-blue margins around the plotting area
-    ctx.fillStyle = "#deefff";
-    ctx.fillRect(0, 0, 60, 420);
-    ctx.fillRect(0, 360, 420, 60);
-    ctx.fillRect(0, 0, 420, 30);
-    ctx.fillRect(391, 0, 29, 420);
-
-    // Axes
-    ctx.strokeStyle = "black";
+    // Grid every 10 Tokens
+    ctx.strokeStyle = COLORS.grid;
     ctx.lineWidth = 1;
     ctx.beginPath();
-    ctx.moveTo(60, 30); ctx.lineTo(60, 360);
-    ctx.moveTo(60, 360); ctx.lineTo(390, 360);
+    for (var g = 1; g <= 10; g++) {
+      var gx = ORIGIN_X + g * 30 + 0.5, gy = ORIGIN_Y - g * 30 + 0.5;
+      ctx.moveTo(gx, ORIGIN_Y); ctx.lineTo(gx, 30);
+      ctx.moveTo(ORIGIN_X, gy); ctx.lineTo(390, gy);
+    }
     ctx.stroke();
 
-    // Ticks
-    ctx.font = "12px Arial";
-    ctx.fillStyle = "black";
+    // Axes
+    ctx.strokeStyle = COLORS.axis;
+    ctx.beginPath();
+    ctx.moveTo(ORIGIN_X + 0.5, 30); ctx.lineTo(ORIGIN_X + 0.5, ORIGIN_Y + 0.5); ctx.lineTo(390, ORIGIN_Y + 0.5);
+    ctx.stroke();
+
+    // Tick labels
+    ctx.font = "11px " + FONT;
+    ctx.fillStyle = COLORS.tick;
     ctx.textAlign = "center";
-    for (var i = 1; i < 11; i++) ctx.fillText(i * 10, (i + 2) * 30, 375);
+    ctx.textBaseline = "top";
+    for (var i = 0; i <= 10; i++) ctx.fillText(i * 10, ORIGIN_X + i * 30, ORIGIN_Y + 7);
     ctx.textAlign = "right";
-    ctx.fillText(0, 55, 365);
-    for (var j = 10; j > 0; j--) ctx.fillText(j * 10, 55, 425 - (j + 2) * 30);
+    ctx.textBaseline = "middle";
+    for (var j = 1; j <= 10; j++) ctx.fillText(j * 10, ORIGIN_X - 7, ORIGIN_Y - j * 30);
 
     // Axis labels
+    ctx.font = "500 13px " + FONT;
     ctx.textAlign = "center";
-    ctx.font = "20px Arial";
-    ctx.fillStyle = "green";
-    "Tokens to You".split("").forEach(function (ch, n) { ctx.fillText(ch, 28, 100 + 20 * n); });
-    ctx.fillStyle = "blue";
-    ctx.fillText("Tokens to Other person", 225, 398);
+    ctx.textBaseline = "alphabetic";
+    ctx.fillStyle = COLORS.other;
+    ctx.fillText("Tokens to Other person", ORIGIN_X + 165, 408);
+    ctx.save();
+    ctx.translate(20, ORIGIN_Y - 165);
+    ctx.rotate(-Math.PI / 2);
+    ctx.fillStyle = COLORS.you;
+    ctx.fillText("Tokens to You", 0, 0);
+    ctx.restore();
 
     // Budget line
     var a = lineA(), b = lineB();
-    ctx.strokeStyle = "blue";
+    ctx.strokeStyle = COLORS.line;
+    ctx.lineWidth = hover || dragging ? 3.5 : 2.5;
+    ctx.lineCap = "round";
     ctx.beginPath();
     ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y);
     ctx.stroke();
 
-    // Chosen allocation
+    // Chosen allocation: dashed guides to both axes plus a marker
     if (t !== null) {
       var p = pointAt(t);
-      ctx.fillStyle = "red";
-      ctx.fillRect(p.x - SQUARE / 2, p.y - SQUARE / 2, SQUARE, SQUARE);
+      ctx.setLineDash([4, 4]);
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = COLORS.you;
+      ctx.beginPath(); ctx.moveTo(ORIGIN_X, p.y); ctx.lineTo(p.x, p.y); ctx.stroke();
+      ctx.strokeStyle = COLORS.other;
+      ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p.x, ORIGIN_Y); ctx.stroke();
+      ctx.setLineDash([]);
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, MARKER_R + (dragging ? 2 : 0), 0, 2 * Math.PI);
+      ctx.fillStyle = COLORS.marker;
+      ctx.shadowColor = "rgba(0, 0, 0, 0.25)";
+      ctx.shadowBlur = 4;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      ctx.lineWidth = 2.5;
+      ctx.strokeStyle = "#fff";
+      ctx.stroke();
     }
   }
 
   function showAllocation() {
+    var you = document.getElementById("toYou"), other = document.getElementById("toOther");
     if (t === null) {
-      document.getElementById("toYou").innerHTML = "&nbsp;&nbsp;";
-      document.getElementById("toOther").innerHTML = "&nbsp;&nbsp;";
+      you.textContent = other.textContent = "–";
+      you.classList.add("empty"); other.classList.add("empty");
       return;
     }
     var al = allocation();
-    document.getElementById("toYou").textContent = al.you.toFixed(1);
-    document.getElementById("toOther").textContent = al.other.toFixed(1);
+    you.textContent = al.you.toFixed(1);
+    other.textContent = al.other.toFixed(1);
+    you.classList.remove("empty"); other.classList.remove("empty");
+  }
+
+  function showProgress() {
+    var el = document.getElementById("progress");
+    el.innerHTML = "";
+    for (var i = 1; i <= rounds; i++) {
+      var dot = document.createElement("span");
+      if (i < period) dot.className = "done";
+      if (i === period) dot.className = "current";
+      el.appendChild(dot);
+    }
   }
 
   function setT(tt) {
@@ -242,13 +351,10 @@
     draw();
   }
 
-  // Convert a pointer event to canvas pixels (works when the canvas is scaled or the page scrolled).
+  // Convert a pointer event to logical canvas pixels (works when scaled or scrolled).
   function toCanvas(e) {
     var r = canvas.getBoundingClientRect();
-    return {
-      x: (e.clientX - r.left) * (canvas.width / r.width),
-      y: (e.clientY - r.top) * (canvas.height / r.height)
-    };
+    return { x: (e.clientX - r.left) * (SIZE / r.width), y: (e.clientY - r.top) * (SIZE / r.height) };
   }
 
   canvas.addEventListener("pointerdown", function (e) {
@@ -259,15 +365,18 @@
     e.preventDefault();
   });
   canvas.addEventListener("pointermove", function (e) {
-    if (!dragging) return;
-    var p = toCanvas(e);
-    setT(project(p.x, p.y));
+    if (dragging) {
+      var p = toCanvas(e);
+      setT(project(p.x, p.y));
+    }
   });
-  function stopDrag() { dragging = false; }
+  function stopDrag() { dragging = false; draw(); }
   canvas.addEventListener("pointerup", stopDrag);
   canvas.addEventListener("pointercancel", stopDrag);
+  canvas.addEventListener("pointerenter", function () { hover = true; draw(); });
+  canvas.addEventListener("pointerleave", function () { hover = false; draw(); });
 
-  // Arrow keys move the square along the line in steps of 0.1 Token to the Other person.
+  // Arrow keys move the marker along the line in steps of 0.1 Token to the Other person.
   canvas.addEventListener("keydown", function (e) {
     var dir = 0;
     if (e.key === "ArrowLeft" || e.key === "ArrowUp") dir = -1;
@@ -285,6 +394,7 @@
     t = null;
     document.getElementById("period").textContent = period;
     showAllocation();
+    showProgress();
     draw();
   }
 
@@ -299,10 +409,27 @@
     document.getElementById("task").style.display = "block";
     document.getElementById("finish").style.display = "none";
     document.getElementById("message").textContent = "";
-    document.querySelectorAll(".versions button").forEach(function (b) {
+    document.querySelectorAll(".segmented button").forEach(function (b) {
       b.classList.toggle("active", +b.dataset.rounds === n);
     });
     loadDecision();
+  }
+
+  function finish() {
+    var body = document.querySelector("#summary tbody");
+    body.innerHTML = "";
+    for (var i = 0; i < results.you.length; i++) {
+      var tr = document.createElement("tr");
+      [i + 1, results.qy[i], results.qx[i], results.you[i].toFixed(1), results.other[i].toFixed(1)].forEach(function (v) {
+        var td = document.createElement("td");
+        td.textContent = v;
+        tr.appendChild(td);
+      });
+      body.appendChild(tr);
+    }
+    document.getElementById("instructions").style.display = "none";
+    document.getElementById("task").style.display = "none";
+    document.getElementById("finish").style.display = "block";
   }
 
   document.getElementById("submit").addEventListener("click", function () {
@@ -320,17 +447,19 @@
       period++;
       loadDecision();
     } else {
-      document.getElementById("instructions").style.display = "none";
-      document.getElementById("task").style.display = "none";
-      document.getElementById("finish").style.display = "block";
+      finish();
     }
   });
 
-  document.querySelectorAll(".versions button").forEach(function (b) {
+  document.getElementById("again").addEventListener("click", function () { start(rounds); });
+  document.querySelectorAll(".segmented button").forEach(function (b) {
     b.addEventListener("click", function () { start(+b.dataset.rounds); });
   });
 
+  setupCanvas();
   start(3);
+  // Redraw once Inter has loaded so the canvas labels use it too.
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(draw);
 })();
 </script>
 </body>
