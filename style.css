@@ -222,7 +222,7 @@ footer.site-footer {
 }
 .tool-page .ios-tool figcaption { font-size: 0.85rem; color: #6b7280; margin-top: 0.75rem; text-align: center; }
 .tool-frame { margin-top: 1rem; background: #fff; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
-.tool-frame iframe { display: block; width: 100%; height: 1000px; border: 0; }
+.tool-frame iframe { display: block; width: 100%; height: 1000px; border: 0; overflow: hidden; }
 .tool-note { color: var(--muted); font-size: 0.93rem; }
 .citation {
   margin-top: 1rem; padding: 1rem 1.25rem; border-left: 3px solid var(--accent);

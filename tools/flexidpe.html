@@ -29,7 +29,7 @@
       <h2>Try it</h2>
       <p>Choose a version (20, 10, 5 or 3 decisions), then allocate tokens between yourself and another person by clicking on the line and dragging the marker.</p>
       <div class="tool-frame">
-        <iframe src="flexidpe-task.html" title="Flexi-DPE task" loading="lazy"></iframe>
+        <iframe id="flexidpe-frame" src="flexidpe-task.html" title="Flexi-DPE task" scrolling="no"></iframe>
       </div>
     </section>
 
@@ -46,5 +46,15 @@
   <footer class="site-footer">
     <p class="footer-copy">© 2026 Malte Baader · <a href="mailto:malte.baader@nhh.no">malte.baader@nhh.no</a></p>
   </footer>
+  <script>
+    // Size the task frame to its content (the task posts its height whenever it changes).
+    window.addEventListener("message", function (e) {
+      var frame = document.getElementById("flexidpe-frame");
+      if (!frame || e.source !== frame.contentWindow) return;
+      if (e.data && e.data.type === "flexidpe-height" && e.data.height > 0) {
+        frame.style.height = e.data.height + "px";
+      }
+    });
+  </script>
 </body>
 </html>
