@@ -243,3 +243,9 @@ sub { font-size: 0.7em; line-height: 0; vertical-align: -0.25em; }
   border: 1px solid var(--border); border-radius: 8px; background: #fff;
 }
 .cv-fallback { padding: 2rem; text-align: center; color: var(--muted); }
+
+/* Justified body text (bio, abstracts); hyphenation keeps word gaps even */
+.intro-grid p:not(.links), .abstract, .papers details p {
+  text-align: justify; text-justify: inter-word;
+  hyphens: auto; -webkit-hyphens: auto;
+}
