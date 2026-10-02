@@ -233,3 +233,13 @@ footer.site-footer {
 
 /* Keep subscripts from stretching line height */
 sub { font-size: 0.7em; line-height: 0; vertical-align: -0.25em; }
+
+/* CV page: PDF shown inside the site */
+.nav nav a.current { color: var(--text); font-weight: 500; }
+.cv-page .intro { padding-top: 2.5rem; }
+.cv-actions { margin-bottom: 1.25rem; }
+.cv-viewer {
+  display: block; width: 100%; height: min(85vh, 1100px); min-height: 520px;
+  border: 1px solid var(--border); border-radius: 8px; background: #fff;
+}
+.cv-fallback { padding: 2rem; text-align: center; color: var(--muted); }
