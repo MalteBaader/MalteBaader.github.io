@@ -121,11 +121,6 @@ section { scroll-margin-top: 4rem; }
 }
 #research h2 + h3 { margin-top: 0.5rem; }
 #research h3::after { content: ""; flex: 1; height: 1px; background: var(--border); }
-#research h3 .count {
-  font-size: 0.75rem; font-weight: 500; line-height: 1;
-  padding: 0.25rem 0.5rem; border-radius: 999px;
-  color: var(--accent); background: color-mix(in srgb, var(--accent) 10%, transparent);
-}
 
 /* Research: paper entries */
 #research .papers { gap: 1.4rem; }
