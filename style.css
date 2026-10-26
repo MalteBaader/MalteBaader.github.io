@@ -249,3 +249,6 @@ sub { font-size: 0.7em; line-height: 0; vertical-align: -0.25em; }
   text-align: justify; text-justify: inter-word;
   hyphens: auto; -webkit-hyphens: auto;
 }
+
+/* Section pages: the section sits directly under the menu, so it needs no divider of its own */
+main > section:first-child { border-top: none; }
